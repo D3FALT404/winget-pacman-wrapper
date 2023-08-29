@@ -1,5 +1,6 @@
 import click
 import os
+import subprocess
 
 @click.command()
 @click.option("-S", "--install", type=str, default="")
@@ -12,7 +13,12 @@ def cli(install, update, search, remove):
         apps = string_to_array(install)
         click.echo(apps)
         for app in apps:
-            os.system(f'winget install "{app}" -s winget --accept-source-agreements')
+            command = subprocess.run(f'winget install "{app}" -s winget --accept-source-agreements --accept-package-agreements', capture_output=True, text=True, encoding="utf-8")
+            if "Installer hash does not match." in command.stdout:
+                click.echo("sdaoidasnjiionsdaniodsa")
+                command = subprocess.run(f'winget install "{app}" -s msstore --accept-source-agreements --accept-package-agreements',
+                                         capture_output=True, text=True, encoding="utf-8")
+            click.echo(command.stdout)
     elif remove:
         apps = string_to_array(remove)
         for app in apps:
