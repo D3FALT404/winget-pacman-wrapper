@@ -9,9 +9,7 @@ import subprocess
 @click.option("-R", "--remove", type=str, default="")
 def cli(install, update, search, remove):
     if install:
-        click.echo(install)
         apps = string_to_array(install)
-        click.echo(apps)
         for app in apps:
             command = subprocess.run(f'winget install "{app}" -s winget --accept-source-agreements --accept-package-agreements', capture_output=True, text=True, encoding="utf-8")
             if "Installer hash does not match." in command.stdout:
